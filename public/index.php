@@ -1,5 +1,5 @@
 <?php
-    require "../app/functions/pages.php";
+    require "../bootstrap.php";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

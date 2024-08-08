@@ -5,7 +5,7 @@
  */
 function connect(): PDO
 {
-    $pdo = new \PDO('mysql:host=localhost;dbname=php-estruturado;charset=utf-8', 'user', '123');
+    $pdo = new \PDO('mysql:host=localhost;dbname=php_estruturado;charset=utf8mb4', 'lucas', '123123');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
@@ -43,6 +43,10 @@ function create($table, $fields): bool
     }
 }
 
+function listAll($table): array()
+{
+
+}
 /**
  * Update information in the database
  * @return void

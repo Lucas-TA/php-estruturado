@@ -5,7 +5,7 @@ require "../../../bootstrap.php";
 if (isEmpty()) {
     flash('message', 'Prencha todos os campos');
 
-    return redirect("contato");
+    return redirect("register_user");
 }
 
 $validate = validate([
@@ -17,13 +17,12 @@ $validate = validate([
 
 $registered = create('users', $validate);
 
+if ($registered)
+{
+    flash('message', 'Cadastro realizado com sucesso', 'success');
 
-//if ($registered)
-//{
-//    flash('message', 'Cadastro realizado com sucesso', 'success');
-//
-//    return redirect("register_user");
-//} else {
-//    flash('message', 'Erro ao cadastrar', 'danger');
-//    return redirect("register_user");
-//}
+    return redirect("register_user");
+} else {
+    flash('message', 'Erro ao cadastrar', 'danger');
+    return redirect("register_user");
+}

@@ -1,3 +1,4 @@
+<?=get('message'); ?>
 <form action="../pages/forms/register_user.php" method="post">
 
     <div class="form-group">

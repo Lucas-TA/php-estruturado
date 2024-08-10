@@ -43,6 +43,10 @@ function create($table, $fields): bool
     }
 }
 
+function listAll($table): array()
+{
+
+}
 /**
  * Return all users information
  * @param $table

@@ -5,7 +5,7 @@
  */
 function connect(): PDO
 {
-    $pdo = new \PDO('mysql:host=localhost;dbname=php_estruturado;charset=utf8mb4', 'lucas', '123123');
+    $pdo = new PDO('mysql:host=localhost;dbname=php_estruturado;charset=utf8mb4', 'lucas', '123123');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
@@ -24,7 +24,7 @@ function create($table, $fields): bool
     {
         $fields = (array) $fields;
     }
-    $sql = "INSERT INTO {$table}";
+    $sql = "INSERT INTO $table";
     $sql .= "(" . implode(', ', array_keys($fields)) .")";
     $sql .= " VALUES";
     $sql .= "(" . ":" . implode(',:', array_keys($fields)) . ")";
@@ -38,15 +38,11 @@ function create($table, $fields): bool
         return $insert->execute($fields);
 
     } catch (PDOException $e) {
-        echo "Erro ao inserir dados: " . $e->getMessage();
+        echo "Error on inserting data: " . $e->getMessage();
         return false;
     }
 }
 
-function listAll($table): array()
-{
-
-}
 /**
  * Return all users information
  * @param $table
@@ -56,32 +52,48 @@ function listAll($table): array
 {
     $pdo = connect();
     try {
-        $sql = "SELECT * FROM {$table}";
+        $sql = "SELECT * FROM $table";
         $list = $pdo->query($sql);
 
         if ($list === false) {
             return [];
         }
 
-        return $list->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows as an associative array
+        return $list->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        // Handle any database errors
         return [];
     }
 }
+
 /**
- * Update information in the database
- * @return void
+ * Function updates de user information
+ * @param $table
+ * @param $fields
+ * @param $where
+ * @return bool
  */
-function update($table, $field, $value)
+function update($table, $fields, $where): bool
 {
+    if (!is_array($fields))
+    {
+        $fields = (array) $fields;
+    }
+
     $pdo = connect();
 
-    try {
-        $sql = "UPDATE {$table} SET {$field} = :{$value} WHERE {$field} = :{$field}";
-    } catch (PDOException $e) {
-        echo "Erro ao inserir dados: " . $e->getMessage();
-    }
+    $data = array_map(function ($field) {
+        return "$field = :$field";
+    }, array_keys($fields));
+
+    $sql = "UPDATE $table SET " . implode(', ', $data) . " WHERE $where[0] = :$where[0]";
+
+    $data = array_merge($fields, [$where[0] => $where[1]]);
+
+    $update = $pdo->prepare($sql);
+
+    $update->execute($data);
+
+    return $update->rowCount();
 }
 
 /**
@@ -94,7 +106,7 @@ function find($table, $field, $value): array
     $value = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
 
     try {
-        $sql = "SELECT * FROM {$table} WHERE {$field} = :{$field}";
+        $sql = "SELECT * FROM $table WHERE $field = :$field";
 
         $find = $pdo->prepare($sql);
         $find->bindValue(':' . $field, $value);
@@ -103,7 +115,7 @@ function find($table, $field, $value): array
         return $find->fetch(PDO::FETCH_ASSOC);
 
     } catch (PDOException $e) {
-        echo "Erro ao inserir dados: " . $e->getMessage();
+        echo "Error on inserting data: " . $e->getMessage();
     }
 }
 
@@ -111,9 +123,14 @@ function find($table, $field, $value): array
  * Delete information from the database
  * @return void
  */
-function delete()
+function delete($table, $field, $value): bool
 {
+    $pdo = connect();
+    $sql = "DELETE FROM $table WHERE $field = :$field";
+    $delete = $pdo->prepare($sql);
+    $delete->bindValue($field, $value);
 
+    return $delete->execute();
 }
 
 /**

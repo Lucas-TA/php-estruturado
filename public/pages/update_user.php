@@ -4,7 +4,7 @@
     $user = find('users', 'id', $_GET['id']);
 
 ?>
-<form action="../pages/forms/edit_user.php" method="post">
+<form action="../pages/forms/update_user.php" method="post">
 
     <div class="form-group">
         <label for="registerFirstName" class="form-text">First Name:</label>
@@ -26,4 +26,5 @@
     </div>
 
     <button type="submit" class="btn btn-success">Update</button>
+    <a href="?page=home" class="btn btn-primary">Back</a>
 </form>

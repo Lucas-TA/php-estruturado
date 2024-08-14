@@ -14,7 +14,7 @@
      * Request form method
      * @return array
      */
-    function request()
+    function request(): array
     {
         $request = $_SERVER['REQUEST_METHOD'];
         if ($request == 'POST') {
@@ -22,11 +22,19 @@
         }
         return $_GET;
     }
-    function redirect($target)
+    function redirect($target = null)
     {
-        return header("location:/?page={$target}");
+        if ($target) {
+            $url = "/?page=" . urlencode($target);
+        } else {
+            $url = "/";
+        }
+        header("Location: $url");
+        exit();
     }
-    function redirectToHome($target)
+
+    function redirectToHome()
     {
-        return header("location:/");
+        header("Location: /");
+        exit();
     }

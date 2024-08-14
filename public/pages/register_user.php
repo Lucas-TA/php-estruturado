@@ -21,5 +21,6 @@
         <input type="password" name="password" id="registerPassword" placeholder="password" class="form-control">
     </div>
 
-    <button type="submit" class="btn btn-dark">Send</button>
+    <button type="submit" class="btn btn-success">Send</button>
+    <a href="?page=home" class="btn btn-primary">Back</a>
 </form>

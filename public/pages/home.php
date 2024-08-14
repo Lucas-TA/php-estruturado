@@ -1,5 +1,6 @@
-<a href="?page=register_user">Register user</a>
+<a href="?page=register_user" class="btn btn-dark">Register user</a>
 <h2>Home Page</h2>
+<?= get('message') ?>
 <table class="table table-striped table-hover">
     <thead>
         <tr>
@@ -21,7 +22,7 @@
                 <td><?= $user['lastName']; ?></td>
                 <td><?= $user['email']; ?></td>
                 <td>
-                    <a href="?page=edit_user&id=<?=$user['id'];?>" class="btn btn-success">Edit</a>
+                    <a href="?page=update_user&id=<?=$user['id'];?>" class="btn btn-success">Edit</a>
                 </td>
                 <td>
                     <a href="?page=delete_user&id=<?=$user['id'];?>" class="btn btn-danger">X</a>
